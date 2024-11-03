@@ -1,3 +1,5 @@
+package net.nanakusa.virtualMachine;
+
 public class Stack extends SubMemory {
   private int stackPointer = 0;
 

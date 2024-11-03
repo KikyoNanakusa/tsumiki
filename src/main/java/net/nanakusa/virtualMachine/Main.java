@@ -1,4 +1,6 @@
-class Main {
+package net.nanakusa.virtualMachine;
+
+public class Main {
   static final int stackSize = 30;
   static final int codeSize = 30;
   static final int IOSize = 100;

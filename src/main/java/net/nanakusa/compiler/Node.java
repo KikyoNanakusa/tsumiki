@@ -1,3 +1,5 @@
+package net.nanakusa.compiler;
+
 enum ND_TYPE {
   ND_MUL,
   ND_DIV,

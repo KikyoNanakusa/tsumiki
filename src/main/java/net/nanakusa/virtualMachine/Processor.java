@@ -1,3 +1,5 @@
+package net.nanakusa.virtualMachine;
+
 import java.util.ArrayList;
 
 class Processor {

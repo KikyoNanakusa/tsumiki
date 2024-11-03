@@ -1,7 +1,9 @@
+package net.nanakusa.compiler;
+
 import java.io.*;
 import java.util.ArrayList;
 
-class Compiler {
+public class Compiler {
   static ArrayList<Token> token;
 
   public static void main(String[] args) {

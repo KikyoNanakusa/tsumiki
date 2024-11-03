@@ -1,3 +1,5 @@
+package net.nanakusa.compiler;
+
 import java.util.ArrayList;
 
 enum TK_TYPE {

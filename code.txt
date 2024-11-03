@@ -1,0 +1,3 @@
+push 100
+push 30
+eq

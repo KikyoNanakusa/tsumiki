@@ -1,3 +1,5 @@
+package net.nanakusa.virtualMachine;
+
 public class MemoryRegion {
   private final String name;
   private final int start;

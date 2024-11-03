@@ -1,3 +1,5 @@
+package net.nanakusa.virtualMachine;
+
 public class Operators {
   public static final byte POP = 0x01;
   public static final byte PUSH = 0x02;

@@ -1,3 +1,5 @@
+package net.nanakusa.virtualMachine;
+
 public class SubMemory extends Memory {
   private final Memory parentMemory;
   private final String name;
