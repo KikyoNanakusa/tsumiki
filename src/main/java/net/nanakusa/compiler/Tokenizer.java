@@ -1,10 +1,12 @@
 package net.nanakusa.compiler;
 
-import java.util.ArrayList;
+import java.util.List;
 
 enum TK_TYPE {
   TK_NUM,
   TK_RESERVED,
+  TK_IDENT,
+  TL_EOF,
 };
 
 class Token {
@@ -43,7 +45,7 @@ class Tokenizer {
   }
 
   private static boolean isReservedChar(char ch) {
-    char[] reservedTokens = { '+', '-', '*', '/', '(', ')', '<', '>' };
+    char[] reservedTokens = { '+', '-', '*', '/', '(', ')', '<', '>', ';', '=' };
 
     for (char token : reservedTokens) {
       if (ch == token) {
@@ -53,7 +55,15 @@ class Tokenizer {
     return false;
   }
 
-  static void tokenize(String code, ArrayList<Token> token) {
+  private static boolean isAlpha(char ch) {
+    return Character.isAlphabetic(ch);
+  }
+
+  private static boolean isAlphaNum(char ch) {
+    return Character.isAlphabetic(ch) || Character.isDigit(ch);
+  }
+
+  static void tokenize(String code, List<Token> token) {
     int p = 0;
     while (p < code.length()) {
 
@@ -78,6 +88,17 @@ class Tokenizer {
         continue;
       }
 
+      if (isAlpha(code.charAt(p))) {
+        String ident = "";
+        while (p < code.length() && isAlphaNum(code.charAt(p))) {
+          ident += code.charAt(p);
+          p++;
+        }
+        Token tok = new Token(TK_TYPE.TK_IDENT, ident);
+        token.add(tok);
+        continue;
+      }
+
       // number
       if (Character.isDigit(code.charAt(p))) {
         String num = "";
@@ -94,9 +115,11 @@ class Tokenizer {
       System.err.println("Unknown token at position " + p + ": " + code.charAt(p));
       throw new Error("Unknown token" + code.charAt(p));
     }
+
+    token.add(new Token(TK_TYPE.TL_EOF, ""));
   }
 
-  static boolean consumeToken(ArrayList<Token> token, String expected) {
+  static boolean consumeToken(List<Token> token, String expected) {
     if (token.size() > 0 && token.get(0).getType() == TK_TYPE.TK_RESERVED && token.get(0).getStr().equals(expected)) {
       token.remove(0);
       return true;
@@ -105,11 +128,15 @@ class Tokenizer {
     }
   }
 
-  static boolean expectToken(ArrayList<Token> token, String expected) {
+  static boolean expectToken(List<Token> token, String expected) {
     if (token.size() > 0 && token.get(0).getType() == TK_TYPE.TK_RESERVED && token.get(0).getStr().equals(expected)) {
       return true;
     } else {
       return false;
     }
+  }
+
+  public static boolean atEof(List<Token> token) {
+    return token.size() == 0 || token.get(0).getType() == TK_TYPE.TL_EOF;
   }
 }

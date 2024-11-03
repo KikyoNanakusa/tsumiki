@@ -12,6 +12,7 @@ net/nanakusa/compiler/TK_TYPE.class
 net/nanakusa/virtualMachine/MemoryRegion.class
 net/nanakusa/compiler/CodeGenerator$1.class
 net/nanakusa/virtualMachine/Operators.class
+net/nanakusa/compiler/LVar.class
 net/nanakusa/virtualMachine/Stack.class
 net/nanakusa/compiler/Node.class
 net/nanakusa/compiler/CodeGenerator.class

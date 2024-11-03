@@ -2,6 +2,7 @@ package net.nanakusa.compiler;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Compiler {
   static ArrayList<Token> token;
@@ -16,8 +17,10 @@ public class Compiler {
     String code = getCode(args[0]);
     Tokenizer.tokenize(code, token);
     Parser.token = token;
-    Node node = Parser.parse();
-    CodeGenerator.codegen(node);
+    List<Node> nodeTree = Parser.parse();
+    for (Node node : nodeTree) {
+      CodeGenerator.codegen(node);
+    }
   }
 
   private static String getCode(String filePath) {

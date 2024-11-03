@@ -1,4 +1,4 @@
 #!/bin/bash
 
-# 仮想マシンで出力ファイルを実行
+# mvn -q -e exec:java -Dexec.mainClass="net.nanakusa.compiler.Compiler" -Dexec.args="code.txt" >output.bin
 java -cp target/classes net.nanakusa.virtualMachine.Main

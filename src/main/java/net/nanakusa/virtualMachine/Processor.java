@@ -145,6 +145,10 @@ class Processor {
     }
 
     // Return the top of the stack
-    return stack.pop();
+    if (stack.getStackPointer() == 0) {
+      return -1;
+    } else {
+      return stack.pop();
+    }
   }
 }

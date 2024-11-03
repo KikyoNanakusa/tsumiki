@@ -9,6 +9,7 @@
 /home/nanakusa/college_class/adb/V-Computer/src/main/java/net/nanakusa/virtualMachine/Main.java
 /home/nanakusa/college_class/adb/V-Computer/src/main/java/net/nanakusa/virtualMachine/MemoryRegion.java
 /home/nanakusa/college_class/adb/V-Computer/src/main/java/net/nanakusa/virtualMachine/SubMemory.java
+/home/nanakusa/college_class/adb/V-Computer/src/main/java/net/nanakusa/compiler/LVar.java
 /home/nanakusa/college_class/adb/V-Computer/src/main/java/net/nanakusa/virtualMachine/Operators.java
 /home/nanakusa/college_class/adb/V-Computer/src/main/java/net/nanakusa/virtualMachine/MemoryChangeListener.java
 /home/nanakusa/college_class/adb/V-Computer/src/main/java/net/nanakusa/virtualMachine/Stack.java

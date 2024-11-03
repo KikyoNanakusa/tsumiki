@@ -46,7 +46,7 @@ public class Memory {
 
   public int read(int addr) {
     if (addr < 0 || addr >= MEM_SIZE) {
-      throw new IllegalArgumentException("Invalid Address");
+      throw new IllegalArgumentException("Invalid Address: " + addr);
     }
     return this.memory[addr];
   }

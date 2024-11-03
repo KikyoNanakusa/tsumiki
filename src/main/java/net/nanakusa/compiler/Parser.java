@@ -1,17 +1,63 @@
 package net.nanakusa.compiler;
 
 import java.util.ArrayList;
+import java.util.List;
 
 class Parser {
-  static ArrayList<Token> token;
+  static List<Token> token;
+  static List<LVar> locals = new ArrayList<>();
+  static List<Node> code = new ArrayList<>();
 
-  public static Node parse() {
-    return expr();
+  public static LVar findLVar(String name) {
+    for (LVar lvar : locals) {
+      if (lvar.getName().equals(name)) {
+        return lvar;
+      }
+    }
+    return null;
+  }
+
+  public static List<Node> parse() {
+    return program();
+  }
+
+  // stmt*
+  private static List<Node> program() {
+    while (!Tokenizer.atEof(token)) {
+      Node node = stmt();
+      code.add(node);
+    }
+
+    return code;
+  }
+
+  // expr ";"
+  private static Node stmt() {
+    Node node = expr();
+
+    if (!Tokenizer.consumeToken(token, ";")) {
+      throw new Error("';' not found at the end of statement");
+    }
+
+    return node;
   }
 
   // expr = equality
   private static Node expr() {
+    Node node = assign();
+    return node;
+  }
+
+  private static Node assign() {
     Node node = equality();
+    if (Tokenizer.consumeToken(token, "=")) {
+      Node newNode = assign();
+      Node assignNode = new Node(ND_TYPE.ND_ASSIGN);
+      assignNode.setLhs(node);
+      assignNode.setRhs(newNode);
+      return assignNode;
+    }
+
     return node;
   }
 
@@ -168,7 +214,25 @@ class Parser {
       return node;
     }
 
-    throw new Error("Unexpected token");
+    if (token.get(0).getType() == TK_TYPE.TK_IDENT) {
+      Token tok = token.get(0);
+      token.remove(0);
+      Node node = new Node(ND_TYPE.ND_LVAR);
+      node.setName(tok.getStr());
+
+      LVar lvar = findLVar(tok.getStr());
+      if (lvar != null) {
+        node.setOffset(lvar.getOffset());
+      } else {
+        lvar = new LVar(tok.getStr(), locals.size() * 8 + 8);
+        locals.add(lvar);
+        node.setOffset(lvar.getOffset());
+      }
+
+      return node;
+    }
+
+    throw new Error("Unexpected token: " + token.get(0).getStr());
   }
 
 }

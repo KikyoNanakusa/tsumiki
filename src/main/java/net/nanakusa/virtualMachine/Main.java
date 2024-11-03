@@ -12,7 +12,10 @@ public class Main {
 
     Processor processor = new Processor();
     int result = processor.start(memory);
-    System.out.println(result);
-
+    if (result == -1) {
+      System.out.println("Stack has no elements left");
+    } else {
+      System.out.println(result);
+    }
   }
 }

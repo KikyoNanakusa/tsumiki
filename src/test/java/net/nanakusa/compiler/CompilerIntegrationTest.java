@@ -38,6 +38,10 @@ class CompilerIntegrationTest {
 
         // コンパイラを呼び出し、一時ファイルのパスを引数として渡す
         File outputFile = new File("output.bin");
+        if (outputFile.exists()) {
+          outputFile.delete();
+        }
+
         ProcessBuilder compilerProcessBuilder = new ProcessBuilder(
             "java", "-cp", "target/classes", "net.nanakusa.compiler.Compiler", tempFile.getAbsolutePath());
 
@@ -53,7 +57,8 @@ class CompilerIntegrationTest {
         }
 
         // 仮想マシンを呼び出し、output.binを入力として渡す
-        ProcessBuilder vmProcessBuilder = new ProcessBuilder("./virtualMachine.sh");
+        ProcessBuilder vmProcessBuilder = new ProcessBuilder(
+            "java", "-cp", "target/classes", "net.nanakusa.virtualMachine.Main");
         Process vmProcess = vmProcessBuilder.start();
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(vmProcess.getInputStream()));
@@ -65,7 +70,6 @@ class CompilerIntegrationTest {
         vmProcess.waitFor();
         System.out.println("Virtual Machine execution completed. Last output line: " + lastLine);
 
-        // VirtualMachineの出力の最後の行が期待する出力と一致するかを確認
         assertEquals(expectedOutput, lastLine != null ? lastLine.trim() : "", "Code: " + code);
         System.out.println("Test case #" + testCaseNumber + " passed.\n");
 
