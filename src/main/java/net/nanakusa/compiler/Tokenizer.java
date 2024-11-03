@@ -90,6 +90,9 @@ class Tokenizer {
         token.add(tok);
         continue;
       }
+
+      System.err.println("Unknown token at position " + p + ": " + code.charAt(p));
+      throw new Error("Unknown token" + code.charAt(p));
     }
   }
 

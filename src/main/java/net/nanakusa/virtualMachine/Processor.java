@@ -10,7 +10,7 @@ class Processor {
 
   private void loadCode(SubMemory code) {
     Assembler assembler = new Assembler();
-    ArrayList<Byte> machineCode = assembler.loadFileAndAssemble("code.txt");
+    ArrayList<Byte> machineCode = assembler.loadFileAndAssemble("output.bin");
 
     for (byte b : machineCode) {
       code.write(pc, b);
@@ -18,7 +18,7 @@ class Processor {
     }
   }
 
-  public void start(Memory memory) {
+  public int start(Memory memory) {
     Stack stack = memory.addStack(0);
     SubMemory code = memory.addMemoryRegion("code", stackSize, stackSize + codeSize);
     SubMemory IO = memory.addMemoryRegion("IO", stackSize + codeSize, stackSize + codeSize + IOSize - 1);
@@ -143,5 +143,8 @@ class Processor {
       }
       endFlag = true;
     }
+
+    // Return the top of the stack
+    return stack.pop();
   }
 }

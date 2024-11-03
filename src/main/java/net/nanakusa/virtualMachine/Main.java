@@ -8,10 +8,11 @@ public class Main {
   public static void main(String[] args) {
     Memory memory = new Memory(stackSize + codeSize + IOSize);
 
-    MemoryViewer viewer = new MemoryViewer(memory, 30);
+    // MemoryViewer viewer = new MemoryViewer(memory, 30);
 
     Processor processor = new Processor();
-    processor.start(memory);
+    int result = processor.start(memory);
+    System.out.println(result);
 
   }
 }
