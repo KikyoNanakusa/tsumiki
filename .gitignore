@@ -34,8 +34,6 @@ nb-configuration.xml
 # VS Code
 .vscode/
 
-# OS固有のファイルを無視
-
 # MacOS
 .DS_Store
 
