@@ -12,6 +12,7 @@ enum ND_TYPE {
   ND_EQ,
   ND_NEQ,
   ND_LVAR,
+  ND_RETURN,
   ND_FOR,
   ND_IF,
   ND_WHILE,

@@ -34,7 +34,7 @@ class Token {
 
 class Tokenizer {
   private static String isReservedString(String str) {
-    String[] reservedTokens = { "for", "while", "if", "<=", ">=", "==", "!=" };
+    String[] reservedTokens = { "for", "while", "if", "<=", ">=", "==", "!=", "return" };
 
     for (String token : reservedTokens) {
       if (str.length() >= token.length() && str.substring(0, token.length()).equals(token)) {
@@ -60,7 +60,7 @@ class Tokenizer {
   }
 
   private static boolean isAlphaNum(char ch) {
-    return Character.isAlphabetic(ch) || Character.isDigit(ch);
+    return Character.isAlphabetic(ch) || Character.isDigit(ch) || ch == '_';
   }
 
   static void tokenize(String code, List<Token> token) {
@@ -68,7 +68,7 @@ class Tokenizer {
     while (p < code.length()) {
 
       // 空白はスキップ
-      if (code.charAt(p) == ' ') {
+      if (code.charAt(p) == ' ' || code.charAt(p) == '\n' || code.charAt(p) == '\t') {
         p++;
         continue;
       }

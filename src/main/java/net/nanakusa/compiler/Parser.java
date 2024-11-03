@@ -33,7 +33,13 @@ class Parser {
 
   // expr ";"
   private static Node stmt() {
-    Node node = expr();
+    Node node;
+    if (Tokenizer.consumeToken(token, "return")) {
+      node = new Node(ND_TYPE.ND_RETURN);
+      node.setLhs(expr());
+    } else {
+      node = expr();
+    }
 
     if (!Tokenizer.consumeToken(token, ";")) {
       throw new Error("';' not found at the end of statement");
@@ -224,7 +230,7 @@ class Parser {
       if (lvar != null) {
         node.setOffset(lvar.getOffset());
       } else {
-        lvar = new LVar(tok.getStr(), locals.size() * 8 + 8);
+        lvar = new LVar(tok.getStr(), locals.size());
         locals.add(lvar);
         node.setOffset(lvar.getOffset());
       }

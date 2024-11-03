@@ -23,6 +23,9 @@ public class CodeGenerator {
       case ND_NUM:
         System.out.printf("push %d\n", node.getVal());
         return;
+      case ND_RETURN:
+        codegen(node.getLhs());
+        return;
     }
 
     codegen(node.getLhs());

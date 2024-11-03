@@ -77,13 +77,13 @@ class Processor {
             operand1 = stack.pop();
             op = memory.read(operand1);
             stack.push(op);
-            System.out.println("LD (" + operand1 + "= " + op + ")");
+            System.out.println("LD (addr: " + operand1 + " value: " + op + ")");
             break;
           case Operators.ST:
             operand2 = stack.pop();
             operand1 = stack.pop();
-            memory.write(operand2, operand1);
-            System.out.println("ST (" + operand1 + " " + operand2 + ")");
+            memory.write(operand1, operand2);
+            System.out.println("ST (addr: " + operand1 + " value: " + operand2 + ")");
             break;
           case Operators.JNZ:
             operand2 = stack.pop(); // jump adress
