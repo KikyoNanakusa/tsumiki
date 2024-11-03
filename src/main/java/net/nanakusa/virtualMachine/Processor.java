@@ -1,6 +1,7 @@
 package net.nanakusa.virtualMachine;
 
 import java.util.ArrayList;
+import net.nanakusa.assembler.Assembler;
 
 class Processor {
   static final int stackSize = 30;
@@ -10,7 +11,7 @@ class Processor {
 
   private void loadCode(SubMemory code) {
     Assembler assembler = new Assembler();
-    ArrayList<Byte> machineCode = assembler.loadFileAndAssemble("output.bin");
+    ArrayList<Byte> machineCode = assembler.loadFileAndAssemble("output.s");
 
     for (byte b : machineCode) {
       code.write(pc, b);

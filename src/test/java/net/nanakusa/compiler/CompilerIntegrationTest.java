@@ -37,7 +37,7 @@ class CompilerIntegrationTest {
         System.out.println("Code written to temporary file: " + tempFile.getAbsolutePath());
 
         // コンパイラを呼び出し、一時ファイルのパスを引数として渡す
-        File outputFile = new File("output.bin");
+        File outputFile = new File("output.s");
         if (outputFile.exists()) {
           outputFile.delete();
         }

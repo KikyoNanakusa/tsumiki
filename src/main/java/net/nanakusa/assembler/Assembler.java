@@ -1,11 +1,13 @@
-package net.nanakusa.virtualMachine;
+package net.nanakusa.assembler;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.io.IOException;
+import net.nanakusa.virtualMachine.Operators;
 
 public class Assembler {
   private String code = "";
@@ -23,6 +25,7 @@ public class Assembler {
       Byte[] operator = convertToMachineCode(tokens);
       machineCode.addAll(Arrays.asList(operator));
     }
+    writeToFile("output.bin", machineCode);
     return machineCode;
   }
 
@@ -82,5 +85,15 @@ public class Assembler {
   public ArrayList<Byte> loadFileAndAssemble(String path) {
     loadFile(path);
     return assemble(code);
+  }
+
+  public void writeToFile(String outputPath, ArrayList<Byte> machineCode) {
+    try (FileOutputStream fos = new FileOutputStream(outputPath)) {
+      for (Byte b : machineCode) {
+        fos.write(b);
+      }
+    } catch (IOException e) {
+      throw new IllegalArgumentException("Could not write to file: " + outputPath, e);
+    }
   }
 }
