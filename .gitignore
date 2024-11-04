@@ -8,6 +8,8 @@ hs_err_pid*
 replay_pid*
 dumpstream*
 
+target/
+
 # IntelliJ IDEA
 .idea/
 *.iml
