@@ -31,9 +31,11 @@ class Parser {
     return code;
   }
 
-  // expr ";" | return expr ";" | if "(" expr ")" stmt
+  // expr ";" | return expr ";" | if "(" expr "){" stmt* "}"
+  // | if "(" expr "){" stmt* "}" else "{" stmt* "}"
   private static Node stmt() {
     Node node;
+
     if (Tokenizer.consumeToken(token, "if")) {
       node = new Node(ND_TYPE.ND_IF);
       Tokenizer.expectToken(token, "(");
@@ -61,6 +63,21 @@ class Parser {
       return node;
     }
 
+    if (Tokenizer.consumeToken(token, "while")) {
+      node = new Node(ND_TYPE.ND_WHILE);
+      Tokenizer.expectToken(token, "(");
+      Node cond = expr();
+      node.setCond(cond);
+      Tokenizer.expectToken(token, ")");
+      Tokenizer.expectToken(token, "{");
+      List<Node> then = new ArrayList<>();
+      while (!Tokenizer.consumeToken(token, "}")) {
+        then.add(stmt());
+      }
+      node.setThen(then);
+      return node;
+    }
+
     if (Tokenizer.consumeToken(token, "return")) {
       node = new Node(ND_TYPE.ND_RETURN);
       node.setLhs(expr());
@@ -68,9 +85,7 @@ class Parser {
       node = expr();
     }
 
-    if (!Tokenizer.consumeToken(token, ";")) {
-      throw new Error("';' not found at the end of statement");
-    }
+    Tokenizer.expectToken(token, ";");
 
     return node;
   }

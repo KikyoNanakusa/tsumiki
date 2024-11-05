@@ -5,7 +5,7 @@ import net.nanakusa.assembler.Assembler;
 
 class Processor {
   static final int stackSize = 30;
-  static final int codeSize = 30;
+  static final int codeSize = 100;
   static final int IOSize = 100;
   int pc = 0;
 
