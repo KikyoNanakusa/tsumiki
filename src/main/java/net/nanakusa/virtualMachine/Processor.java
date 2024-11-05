@@ -35,6 +35,7 @@ class Processor {
       cmd = code.read(pc);
       pc++;
       while (cmd != -1 && cmd != 0) {
+        System.out.println("PC: " + pc + " CMD: " + cmd);
         switch (cmd) {
           case Operators.POP:
             op = stack.pop();
@@ -103,7 +104,8 @@ class Processor {
             }
             break;
           case Operators.JMP:
-            operand1 = stack.pop();
+            operand1 = code.read(pc);
+            pc += 1;
             System.out.println("JMP (" + operand1 + ")");
             pc = operand1;
             break;

@@ -7,31 +7,67 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import net.nanakusa.virtualMachine.Operators;
 
 public class Assembler {
   private String code = "";
+  private Map<String, Integer> labelMap = new HashMap<>();
 
-  public ArrayList<Byte> assemble(String code) {
-    ArrayList<Byte> machineCode = new ArrayList<>();
+  private List<List<String>> preprocess(String code) {
     String[] lines = code.split("\n");
+    List<List<String>> tokenizedLines = new ArrayList<>();
 
-    for (String line : lines) {
+    int totalBytes = 0;
+    for (int i = 0; i < lines.length; i++) {
+      String line = lines[i];
+
       if (line.trim().isEmpty()) {
         continue;
       }
 
-      String[] tokens = line.trim().split("\\s+");
-      Byte[] operator = convertToMachineCode(tokens);
-      machineCode.addAll(Arrays.asList(operator));
+      ArrayList<String> tokenizedLine = new ArrayList<>(Arrays.asList(line.trim().split("\\s+")));
+      enumrateLabel(tokenizedLine, totalBytes);
+
+      if (tokenizedLine.size() == 0) {
+        continue;
+      }
+      tokenizedLines.add(tokenizedLine);
+      totalBytes += tokenizedLine.size();
+    }
+
+    // for (String label : labelMap.keySet()) {
+    // System.out.println(label + " -> " + labelMap.get(label));
+    // }
+
+    return tokenizedLines;
+  }
+
+  private void enumrateLabel(List<String> tokens, int lineIndex) {
+    String token = tokens.get(0);
+    if (token.endsWith(":")) {
+      labelMap.put(token.substring(0, token.length() - 1), lineIndex);
+      tokens.remove(0);
+    }
+  }
+
+  public ArrayList<Byte> assemble(String code) {
+    List<List<String>> tokenizedLines = preprocess(code);
+    ArrayList<Byte> machineCode = new ArrayList<>();
+
+    for (List<String> line : tokenizedLines) {
+      Byte[] stmt = convertToMachineCode(line);
+      machineCode.addAll(Arrays.asList(stmt));
     }
     writeToFile("output.bin", machineCode);
     return machineCode;
   }
 
-  private Byte[] convertToMachineCode(String[] tokens) {
-    String token = tokens[0];
+  private Byte[] convertToMachineCode(List<String> tokens) {
+    String token = tokens.get(0);
     token = token.toLowerCase();
+    String label = "";
     switch (token) {
       case "pop":
         return new Byte[] { Operators.POP };
@@ -50,17 +86,30 @@ public class Assembler {
       case "st":
         return new Byte[] { Operators.ST };
       case "jnz":
-        return new Byte[] { Operators.JNZ };
+        label = tokens.get(1).substring(0, tokens.get(1).length() - 1);
+        if (labelMap.containsKey(label)) {
+          return new Byte[] { Operators.JNZ, labelMap.get(label).byteValue() };
+        } else {
+          return new Byte[] { Operators.JNZ, Byte.parseByte(tokens.get(1)) };
+        }
       case "jz":
-        return new Byte[] { Operators.JZ };
+        label = tokens.get(1).substring(0, tokens.get(1).length() - 1);
+        if (labelMap.containsKey(label)) {
+          return new Byte[] { Operators.JZ, labelMap.get(label).byteValue() };
+        } else {
+          return new Byte[] { Operators.JZ, Byte.parseByte(tokens.get(1)) };
+        }
       case "jmp":
-        return new Byte[] { Operators.JMP };
+        label = tokens.get(1);
+        if (labelMap.containsKey(label)) {
+          return new Byte[] { Operators.JMP, labelMap.get(label).byteValue() };
+        } else {
+          return new Byte[] { Operators.JMP, Byte.parseByte(tokens.get(1)) };
+        }
       case "end":
         return new Byte[] { Operators.END };
-      default:
-        throw new IllegalArgumentException("Unknown operator: " + token);
       case "push":
-        return new Byte[] { Operators.PUSH, Byte.parseByte(tokens[1]) };
+        return new Byte[] { Operators.PUSH, Byte.parseByte(tokens.get(1)) };
       case "lt":
         return new Byte[] { Operators.LESS };
       case "leq":
@@ -69,6 +118,8 @@ public class Assembler {
         return new Byte[] { Operators.EQ };
       case "neq":
         return new Byte[] { Operators.NEQ };
+      default:
+        throw new IllegalArgumentException("Unknown operator: " + token);
     }
   }
 

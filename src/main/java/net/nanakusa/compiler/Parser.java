@@ -31,7 +31,7 @@ class Parser {
     return code;
   }
 
-  // expr ";"
+  // expr ";" | return expr ";"
   private static Node stmt() {
     Node node;
     if (Tokenizer.consumeToken(token, "return")) {

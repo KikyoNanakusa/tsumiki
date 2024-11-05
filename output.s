@@ -1,13 +1,7 @@
-push 0
-push 0
-push 0
+push 1
+push 2
+add 
+jmp TEST
 push 3
-st
-push 1
-push 10
-st
-push 0
-ld
-push 1
-ld
-add
+push 4
+TEST: pop

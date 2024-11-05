@@ -34,7 +34,7 @@ class Token {
 
 class Tokenizer {
   private static String isReservedString(String str) {
-    String[] reservedTokens = { "for", "while", "if", "<=", ">=", "==", "!=", "return" };
+    String[] reservedTokens = { "for", "while", "if", "else", "<=", ">=", "==", "!=", "return" };
 
     for (String token : reservedTokens) {
       if (str.length() >= token.length() && str.substring(0, token.length()).equals(token)) {

@@ -45,7 +45,13 @@ public class SubMemory extends Memory {
       }
     }
     // System.out.println("Reading from " + name + " at address " + absAddr);
-    return parentMemory.read(absAddr);
+    try {
+      return parentMemory.read(absAddr);
+    } catch (IllegalArgumentException e) {
+      throw new IllegalArgumentException(
+          "Invalid Address: absAddr = " + absAddr +
+              " addr = " + addr + " in " + name + " region.");
+    }
   }
 
   @Override

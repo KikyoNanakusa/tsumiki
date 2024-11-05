@@ -18,6 +18,7 @@ public class Compiler {
     Tokenizer.tokenize(code, token);
     Parser.token = token;
     List<Node> nodeTree = Parser.parse();
+
     for (LVar lvar : Parser.locals) {
       System.out.printf("push 0\n");
     }
