@@ -44,7 +44,6 @@ public class CodeGenerator {
             codegen(stmt);
           }
         }
-
       case ND_WHILE:
         int wlabel = labelSeq;
         labelSeq++;
@@ -56,6 +55,21 @@ public class CodeGenerator {
         }
         System.out.printf("jmp L%d\n", wlabel);
         System.out.printf("L%dend:\n", wlabel);
+
+        return;
+      case ND_FOR:
+        int fLabel = labelSeq;
+        labelSeq++;
+        codegen(node.getInit());
+        System.out.printf("L%d:\n", fLabel);
+        codegen(node.getCond());
+        System.out.printf("jz L%dend\n", fLabel);
+        for (Node stmt : node.getThen()) {
+          codegen(stmt);
+        }
+        codegen(node.getInc());
+        System.out.printf("jmp L%d\n", fLabel);
+        System.out.printf("L%dend:\n", fLabel);
 
         return;
     }

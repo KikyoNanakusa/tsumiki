@@ -26,11 +26,16 @@ public class Node {
   private int val;
   private Node lhs;
   private Node rhs;
+
   private String name;
   private int offset;
+
   private Node cond;
   private List<Node> then;
   private Node els = null;
+
+  private Node init;
+  private Node inc;
 
   public void printTree(String indent) {
     System.out.println(indent + "Node Type: " + type);
@@ -89,6 +94,14 @@ public class Node {
     this.els = els;
   }
 
+  public void setInit(Node init) {
+    this.init = init;
+  }
+
+  public void setInc(Node inc) {
+    this.inc = inc;
+  }
+
   public int getOffset() {
     return this.offset;
   }
@@ -123,5 +136,13 @@ public class Node {
 
   public Node getEls() {
     return els;
+  }
+
+  public Node getInit() {
+    return init;
+  }
+
+  public Node getInc() {
+    return inc;
   }
 }

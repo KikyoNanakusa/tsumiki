@@ -78,6 +78,27 @@ class Parser {
       return node;
     }
 
+    if (Tokenizer.consumeToken(token, "for")) {
+      node = new Node(ND_TYPE.ND_FOR);
+      Tokenizer.expectToken(token, "(");
+      Node init = expr();
+      Tokenizer.expectToken(token, ";");
+      Node cond = expr();
+      Tokenizer.expectToken(token, ";");
+      Node inc = expr();
+      Tokenizer.expectToken(token, ")");
+      Tokenizer.expectToken(token, "{");
+      List<Node> then = new ArrayList<>();
+      while (!Tokenizer.consumeToken(token, "}")) {
+        then.add(stmt());
+      }
+      node.setInit(init);
+      node.setCond(cond);
+      node.setInc(inc);
+      node.setThen(then);
+      return node;
+    }
+
     if (Tokenizer.consumeToken(token, "return")) {
       node = new Node(ND_TYPE.ND_RETURN);
       node.setLhs(expr());
