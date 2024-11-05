@@ -1,5 +1,6 @@
 package net.nanakusa.compiler;
 
+import net.nanakusa.AST2graphviz.ASTConverter;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,12 @@ public class Compiler {
     Tokenizer.tokenize(code, token);
     Parser.token = token;
     List<Node> nodeTree = Parser.parse();
+
+    if (args[1].equals("--ast")) {
+      for (int i = 0; i < nodeTree.size(); i++) {
+        ASTConverter.saveAsDotFile(nodeTree.get(i), "ast_dot/ast_stmt" + i + ".dot");
+      }
+    }
 
     for (LVar lvar : Parser.locals) {
       System.out.printf("push 0\n");

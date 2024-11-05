@@ -47,3 +47,6 @@ $RECYCLE.BIN/
 
 # Linux
 *~
+
+ast_dot/
+ast_png/
