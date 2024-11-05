@@ -35,7 +35,7 @@ class Processor {
       cmd = code.read(pc);
       pc++;
       while (cmd != -1 && cmd != 0) {
-        System.out.println("PC: " + pc + " CMD: " + cmd);
+        // System.out.println("PC: " + pc + " CMD: " + cmd);
         switch (cmd) {
           case Operators.POP:
             op = stack.pop();
@@ -88,17 +88,19 @@ class Processor {
             System.out.println("ST (addr: " + operand1 + " value: " + operand2 + ")");
             break;
           case Operators.JNZ:
-            operand2 = stack.pop(); // jump adress
-            operand1 = stack.pop(); // flag
-            System.out.println("JNZ (" + operand1 + " " + operand2 + ")");
+            operand1 = stack.pop();
+            operand2 = code.read(pc);
+            pc += 1;
+            System.out.println("JNZ flag = " + operand1 + " addr = " + operand2);
             if (operand1 != 0) {
               pc = operand2;
             }
             break;
           case Operators.JZ:
-            operand2 = stack.pop();
-            operand1 = stack.pop(); // flag
-            System.out.println("JZ (" + operand1 + " " + operand2 + ")");
+            operand1 = stack.pop();
+            operand2 = code.read(pc);
+            pc += 1;
+            System.out.println("JZ flag = " + operand1 + " addr = " + operand2);
             if (operand1 == 0) {
               pc = operand2;
             }

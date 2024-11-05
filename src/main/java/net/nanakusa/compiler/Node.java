@@ -1,5 +1,7 @@
 package net.nanakusa.compiler;
 
+import java.util.List;
+
 enum ND_TYPE {
   ND_MUL,
   ND_DIV,
@@ -15,8 +17,8 @@ enum ND_TYPE {
   ND_RETURN,
   ND_FOR,
   ND_IF,
+  ND_ELSE,
   ND_WHILE,
-  ND_COND,
 }
 
 public class Node {
@@ -26,6 +28,9 @@ public class Node {
   private Node rhs;
   private String name;
   private int offset;
+  private Node cond;
+  private List<Node> then;
+  private Node els = null;
 
   public void printTree(String indent) {
     System.out.println(indent + "Node Type: " + type);
@@ -72,6 +77,18 @@ public class Node {
     this.offset = offset;
   }
 
+  public void setCond(Node cond) {
+    this.cond = cond;
+  }
+
+  public void setThen(List<Node> then) {
+    this.then = then;
+  }
+
+  public void setEls(Node els) {
+    this.els = els;
+  }
+
   public int getOffset() {
     return this.offset;
   }
@@ -94,5 +111,17 @@ public class Node {
 
   public ND_TYPE getType() {
     return type;
+  }
+
+  public Node getCond() {
+    return cond;
+  }
+
+  public List<Node> getThen() {
+    return then;
+  }
+
+  public Node getEls() {
+    return els;
   }
 }

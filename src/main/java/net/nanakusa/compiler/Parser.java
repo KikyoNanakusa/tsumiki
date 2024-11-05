@@ -31,9 +31,36 @@ class Parser {
     return code;
   }
 
-  // expr ";" | return expr ";"
+  // expr ";" | return expr ";" | if "(" expr ")" stmt
   private static Node stmt() {
     Node node;
+    if (Tokenizer.consumeToken(token, "if")) {
+      node = new Node(ND_TYPE.ND_IF);
+      Tokenizer.expectToken(token, "(");
+      Node cond = expr();
+      node.setCond(cond);
+      Tokenizer.expectToken(token, ")");
+      Tokenizer.expectToken(token, "{");
+      List<Node> then = new ArrayList<>();
+      while (!Tokenizer.consumeToken(token, "}")) {
+        then.add(stmt());
+      }
+      node.setThen(then);
+
+      then = new ArrayList<>();
+      if (Tokenizer.consumeToken(token, "else")) {
+        Tokenizer.expectToken(token, "{");
+        Node els = new Node(ND_TYPE.ND_ELSE);
+        while (!Tokenizer.consumeToken(token, "}")) {
+          then.add(stmt());
+        }
+        els.setThen(then);
+        node.setEls(els);
+      }
+
+      return node;
+    }
+
     if (Tokenizer.consumeToken(token, "return")) {
       node = new Node(ND_TYPE.ND_RETURN);
       node.setLhs(expr());

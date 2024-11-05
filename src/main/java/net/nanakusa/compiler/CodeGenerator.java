@@ -1,6 +1,8 @@
 package net.nanakusa.compiler;
 
 public class CodeGenerator {
+  private static int labelSeq = 0;
+
   public static void genLVar(Node node) {
     if (node.getType() != ND_TYPE.ND_LVAR) {
       throw new Error("not an lvar: " + node.getType());
@@ -25,6 +27,23 @@ public class CodeGenerator {
         return;
       case ND_RETURN:
         codegen(node.getLhs());
+        System.out.printf("end\n");
+        return;
+      case ND_IF:
+        codegen(node.getCond());
+        System.out.printf("jz L%dend\n", labelSeq);
+        for (Node stmt : node.getThen()) {
+          codegen(stmt);
+        }
+
+        System.out.printf("L%dend:\n", labelSeq);
+        if (node.getEls() != null) {
+          for (Node stmt : node.getEls().getThen()) {
+            codegen(stmt);
+          }
+        }
+
+        labelSeq++;
         return;
     }
 

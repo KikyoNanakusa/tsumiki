@@ -1,3 +1,1 @@
-a = 3;
-bravo = 10;
-return a+bravo;
+a = 3; b = 3; if (a == b) { c = 5; d = 5; if (c == d) { return 3;} } else { return 1; }

@@ -86,14 +86,14 @@ public class Assembler {
       case "st":
         return new Byte[] { Operators.ST };
       case "jnz":
-        label = tokens.get(1).substring(0, tokens.get(1).length() - 1);
+        label = tokens.get(1).substring(0, tokens.get(1).length());
         if (labelMap.containsKey(label)) {
           return new Byte[] { Operators.JNZ, labelMap.get(label).byteValue() };
         } else {
           return new Byte[] { Operators.JNZ, Byte.parseByte(tokens.get(1)) };
         }
       case "jz":
-        label = tokens.get(1).substring(0, tokens.get(1).length() - 1);
+        label = tokens.get(1).substring(0, tokens.get(1).length());
         if (labelMap.containsKey(label)) {
           return new Byte[] { Operators.JZ, labelMap.get(label).byteValue() };
         } else {

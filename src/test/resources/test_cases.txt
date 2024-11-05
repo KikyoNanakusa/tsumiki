@@ -27,3 +27,11 @@ a = 10; b = a / 2; return b;,5
 c = 15; return c - 5;,10
 result = 1 + 2 * 3; return result;,7
 a = 3; b = a + 4; return a == b;,0
+a = 3; b = 3; if (a == b) { return 0; } else { return 1; },0
+if (1) { return 1; } else { return 0; },1
+if (0) { return 1; } else { return 0; },0
+if (1 < 2) { return 1; } else { return 0; },1
+if (1 > 2) { return 1; } else { return 0; },0
+a = 3; b = 3; if (a == b) { c = 5; return c; } else { return 1; },5
+a = 3; b = 3; if (a == b) { c = 5; d = 5; if (c == d) { return 3;} } else { return 1; },3
+
