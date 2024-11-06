@@ -20,7 +20,7 @@ public class Compiler {
     Parser.token = token;
     List<Node> nodeTree = Parser.parse();
 
-    if (args[1].equals("--ast")) {
+    if (args.length > 2 && args[1].equals("--ast")) {
       for (int i = 0; i < nodeTree.size(); i++) {
         ASTConverter.saveAsDotFile(nodeTree.get(i), "ast_dot/ast_stmt" + i + ".dot");
       }
