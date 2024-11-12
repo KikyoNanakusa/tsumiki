@@ -15,7 +15,7 @@ class Tokenizer {
   }
 
   private static boolean isReservedChar(char ch) {
-    char[] reservedTokens = { '+', '-', '*', '/', '(', ')', '<', '>', ';', '=', '{', '}' };
+    char[] reservedTokens = { '+', '-', '*', '/', '(', ')', '<', '>', ';', '=', '{', '}', '[', ']' };
 
     for (char token : reservedTokens) {
       if (ch == token) {
@@ -95,6 +95,16 @@ class Tokenizer {
       return true;
     } else {
       return false;
+    }
+  }
+
+  static int expectNumber(List<Token> token) {
+    if (token.size() == 0 || token.get(0).getType() != TK_TYPE.TK_NUM) {
+      throw new Error("Expected a number");
+    } else {
+      int value = Integer.parseInt(token.get(0).getStr());
+      token.remove(0);
+      return value;
     }
   }
 

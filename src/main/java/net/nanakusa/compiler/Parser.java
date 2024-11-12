@@ -119,6 +119,12 @@ class Parser {
 
   private static Node assign() {
     Node node = equality();
+    if (Tokenizer.consumeToken(token, "[")) {
+      int size = Tokenizer.expectNumber(token);
+      Node assignNode = new Node(ND_TYPE.ND_ASSIGN);
+      assignNode.setLhs(node);
+    }
+
     if (Tokenizer.consumeToken(token, "=")) {
       Node newNode = assign();
       Node assignNode = new Node(ND_TYPE.ND_ASSIGN);
