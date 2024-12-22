@@ -20,7 +20,7 @@ class Processor {
   }
 
   public int start(Memory memory) {
-    Stack stack = memory.addStack(0);
+    Stack stack = memory.registerStack(0);
     SubMemory code = memory.addMemoryRegion("code", stackSize, stackSize + codeSize);
     SubMemory IO = memory.addMemoryRegion("IO", stackSize + codeSize, stackSize + codeSize + IOSize - 1);
 

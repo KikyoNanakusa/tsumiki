@@ -82,7 +82,7 @@ public class Memory {
     return this.memoryMap;
   }
 
-  public Stack addStack(int start) {
+  public Stack registerStack(int start) {
     if (start < 0 || start >= MEM_SIZE) {
       throw new IllegalArgumentException("Invalid Address");
     }
