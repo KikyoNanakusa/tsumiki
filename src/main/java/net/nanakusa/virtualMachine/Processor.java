@@ -165,14 +165,14 @@ class Processor {
       result = -1;
     }
 
-    // Show the result on the display via memory mapped I/O
-    mda_io.initDisplay();
-    SwingUtilities.invokeLater(() -> {
-      String message = "Result: " + result;
-      for (int i = 0; i < message.length(); i++) {
-        mda_io.write(i + 80*24, message.charAt(i));
-      }
-    });
+    // DEBUG: Show the result on the display via memory mapped I/O
+    // mda_io.initDisplay();
+    // SwingUtilities.invokeLater(() -> {
+    //   String message = "Result: " + result;
+    //   for (int i = 0; i < message.length(); i++) {
+    //     mda_io.write(i + 80*24, message.charAt(i));
+    //   }
+    // });
 
 
     return result;
