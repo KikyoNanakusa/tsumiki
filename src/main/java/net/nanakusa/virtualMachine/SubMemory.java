@@ -26,6 +26,18 @@ public class SubMemory extends Memory {
     return this.name;
   }
 
+  public Memory getParentMemory() {
+    return this.parentMemory;
+  }
+
+  public int getStart() {
+    return this.start;
+  }
+
+  public int getEnd() {
+    return this.end;
+  }
+
   @Override
   public String toString() {
     return "SubMemory{" +
@@ -34,6 +46,15 @@ public class SubMemory extends Memory {
         ", start=" + start +
         ", end=" + end +
         '}';
+  }
+
+  @Override
+  public int[] getMemory() {
+    int[] memory = new int[end - start + 1];
+    for (int i = start; i <= end; i++) {
+      memory[i - start] = parentMemory.read(i);
+    }
+    return memory;
   }
 
   @Override

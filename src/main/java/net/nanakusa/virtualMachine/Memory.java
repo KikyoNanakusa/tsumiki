@@ -72,14 +72,30 @@ public class Memory {
 
   public SubMemory addMemoryRegion(String name, int start, int end) {
     if (start < 0 || start >= MEM_SIZE || end < 0 || end >= MEM_SIZE || start > end) {
-      throw new IllegalArgumentException("Invalid Address");
+      throw new IllegalArgumentException("Invalid Address, start: " + start + " end: " + end + " size: " + MEM_SIZE);
     }
     this.memoryMap.add(new MemoryRegion(name, start, end));
     return this.getSubMemory(start, end, name);
   }
 
+  public void RegisterMemoryRegion(SubMemory subMemory) {
+    if (subMemory.getParentMemory() != this) {
+      System.err.println("Memory region does not belong to this memory");
+    }
+    this.memoryMap.add(new MemoryRegion(subMemory.getName(), subMemory.getStart(), subMemory.getEnd()));
+  }
+
   public List<MemoryRegion> getMemoryMap() {
     return this.memoryMap;
+  }
+
+  public SubMemory getMemoryRegion(String name) {
+    for (MemoryRegion region : this.memoryMap) {
+      if (region.getName().equals(name)) {
+        return this.getSubMemory(region.getStart(), region.getEnd(), name);
+      }
+    }
+    return null;
   }
 
   public Stack registerStack(int start) {
