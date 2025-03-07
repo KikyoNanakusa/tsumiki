@@ -31,7 +31,7 @@ public class MDADisplayPanel extends JPanel{
 		FontMetrics fm = getFontMetrics(font);
 		charWidth = fm.charWidth('W');
 		charHeight = fm.getHeight();
-		setPreferredSize(new Dimension(this.rows * charWidth, this.cols * charHeight));
+		setPreferredSize(new Dimension(this.cols * charWidth, this.rows * charHeight));
 	}
 
 	@Override

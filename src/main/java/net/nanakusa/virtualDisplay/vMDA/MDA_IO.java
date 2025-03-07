@@ -3,13 +3,17 @@ package net.nanakusa.virtualDisplay.vMDA;
 import net.nanakusa.virtualMachine.SubMemory;
 
 public class MDA_IO extends SubMemory {
-	private static final int ROWS = 80;
-	private static final int COLS = 25;
+	private static final int ROWS = 25;
+	private static final int COLS = 80;
 
 	private MDA mda;
 
 	public MDA_IO(SubMemory memory) {
 		super(memory, 0, ROWS * COLS, "MDAMemory");
+		memory.RegisterMemoryRegion(this);
+		System.out.println("MDA_IO created");
+		System.out.println("Parent Memory: " + memory.toString());
+		System.out.println("Parent Memory Regions: " + memory.getMemoryMap());
 	}
 
    public void initDisplay() {
@@ -38,5 +42,15 @@ public class MDA_IO extends SubMemory {
 		Boolean result = super.write(addr, value);
 		this.mda.updateDisplay();
 		return result;
+	}
+
+	public void printMemory() {
+		for (int i : this.getMemory()) {
+			if (i != 32) {
+				System.out.print("\u001b[00;31m" + i + "\u001b[00m");
+			} else {
+				System.out.print(i);
+			}
+		}
 	}
 }

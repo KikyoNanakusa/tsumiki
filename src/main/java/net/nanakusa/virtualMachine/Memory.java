@@ -78,8 +78,24 @@ public class Memory {
     return this.getSubMemory(start, end, name);
   }
 
+  public void RegisterMemoryRegion(SubMemory subMemory) {
+    if (subMemory.getParentMemory() != this) {
+      System.err.println("Memory region does not belong to this memory");
+    }
+    this.memoryMap.add(new MemoryRegion(subMemory.getName(), subMemory.getStart(), subMemory.getEnd()));
+  }
+
   public List<MemoryRegion> getMemoryMap() {
     return this.memoryMap;
+  }
+
+  public SubMemory getMemoryRegion(String name) {
+    for (MemoryRegion region : this.memoryMap) {
+      if (region.getName().equals(name)) {
+        return this.getSubMemory(region.getStart(), region.getEnd(), name);
+      }
+    }
+    return null;
   }
 
   public Stack registerStack(int start) {

@@ -1,8 +1,8 @@
 package net.nanakusa.virtualDisplay.vMDA;
 
 public class MDA {
-	private static final int ROWS = 80;	
-	private static final int COLS = 25;
+	private static final int ROWS = 25;	
+	private static final int COLS = 80;
 
 	private final MDAFrame frame;
 	private final MDA_IO memory;

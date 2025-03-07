@@ -1,6 +1,9 @@
 package net.nanakusa.virtualMachine;
 
 import java.util.ArrayList;
+
+import javax.swing.SwingUtilities;
+
 import net.nanakusa.assembler.Assembler;
 import net.nanakusa.virtualDisplay.vMDA.MDA_IO;
 
@@ -25,7 +28,6 @@ class Processor {
     SubMemory code = memory.addMemoryRegion("code", stackSize, stackSize + codeSize);
     SubMemory IO = memory.addMemoryRegion("IO", stackSize + codeSize, stackSize + codeSize + IOSize - 1);
     MDA_IO mda_io = new MDA_IO(IO);
-    mda_io.initDisplay();
 
     boolean endFlag = false;
     int cmd = 0, op = 0;
@@ -152,11 +154,27 @@ class Processor {
       endFlag = true;
     }
 
+    
+
+
     // Return the top of the stack
-    if (stack.getStackPointer() == 0) {
-      return -1;
+    final int result;
+    if (stack.getStackPointer() != 0) {
+      result = stack.pop();
     } else {
-      return stack.pop();
+      result = -1;
     }
+
+    // Show the result on the display via memory mapped I/O
+    mda_io.initDisplay();
+    SwingUtilities.invokeLater(() -> {
+      String message = "Result: " + result;
+      for (int i = 0; i < message.length(); i++) {
+        mda_io.write(i + 80*24, message.charAt(i));
+      }
+    });
+
+
+    return result;
   }
 }
