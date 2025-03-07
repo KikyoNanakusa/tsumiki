@@ -72,7 +72,7 @@ public class Memory {
 
   public SubMemory addMemoryRegion(String name, int start, int end) {
     if (start < 0 || start >= MEM_SIZE || end < 0 || end >= MEM_SIZE || start > end) {
-      throw new IllegalArgumentException("Invalid Address");
+      throw new IllegalArgumentException("Invalid Address, start: " + start + " end: " + end + " size: " + MEM_SIZE);
     }
     this.memoryMap.add(new MemoryRegion(name, start, end));
     return this.getSubMemory(start, end, name);

@@ -2,11 +2,12 @@ package net.nanakusa.virtualMachine;
 
 import java.util.ArrayList;
 import net.nanakusa.assembler.Assembler;
+import net.nanakusa.virtualDisplay.vMDA.MDA_IO;
 
 class Processor {
   static final int stackSize = 30;
   static final int codeSize = 100;
-  static final int IOSize = 100;
+  static final int IOSize = 3000;
   int pc = 0;
 
   private void loadCode(SubMemory code) {
@@ -23,6 +24,8 @@ class Processor {
     Stack stack = memory.registerStack(0);
     SubMemory code = memory.addMemoryRegion("code", stackSize, stackSize + codeSize);
     SubMemory IO = memory.addMemoryRegion("IO", stackSize + codeSize, stackSize + codeSize + IOSize - 1);
+    MDA_IO mda_io = new MDA_IO(IO);
+    mda_io.initDisplay();
 
     boolean endFlag = false;
     int cmd = 0, op = 0;
