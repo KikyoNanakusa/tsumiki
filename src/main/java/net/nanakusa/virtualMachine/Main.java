@@ -1,9 +1,5 @@
 package net.nanakusa.virtualMachine;
 
-import javax.swing.SwingUtilities;
-
-import net.nanakusa.virtualDisplay.vMDA.MDA_IO;
-
 public class Main {
 
   public static void main(String[] args) {
