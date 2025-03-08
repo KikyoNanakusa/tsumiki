@@ -110,6 +110,8 @@ public class Assembler {
         return new Byte[] { Operators.END };
       case "push":
         return new Byte[] { Operators.PUSH, Byte.parseByte(tokens.get(1)) };
+      case "push_sp":
+        return new Byte[] { Operators.PUSH_SP };
       case "lt":
         return new Byte[] { Operators.LESS };
       case "leq":
