@@ -52,6 +52,11 @@ class Processor {
             stack.push(op);
             System.out.println("PUSH " + op);
             break;
+          case Operators.PUSH_SP:
+            op = stack.getStackPointer();
+            stack.push(op);
+            System.out.println("PUSH_SP " + op);
+            break;
           case Operators.ADD:
             operand2 = stack.pop();
             operand1 = stack.pop();

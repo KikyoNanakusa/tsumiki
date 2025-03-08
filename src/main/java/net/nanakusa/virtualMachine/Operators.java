@@ -18,4 +18,6 @@ public class Operators {
   public static final byte END = -0x01;
   public static final byte EQ = 0x0F;
   public static final byte NEQ = 0x10;
+
+  public static final byte PUSH_SP = 0x11;
 }
