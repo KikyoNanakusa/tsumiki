@@ -55,6 +55,10 @@ class Processor {
             reg_bp = stack.pop();
             System.out.println("SET_BP " + reg_bp);
             break;
+          case Operators.PUSH_BP:
+            stack.push(reg_bp);
+            System.out.println("PUSH_BP " + reg_bp);
+            break;
           case Operators.POP:
             op = stack.pop();
             System.out.println("POP " + op);
@@ -184,13 +188,13 @@ class Processor {
     }
 
     // DEBUG: Show the result on the display via memory mapped I/O
-    // mda_io.initDisplay();
-    // SwingUtilities.invokeLater(() -> {
-    //   String message = "Result: " + result;
-    //   for (int i = 0; i < message.length(); i++) {
-    //     mda_io.write(i + 80*24, message.charAt(i));
-    //   }
-    // });
+    mda_io.initDisplay();
+    SwingUtilities.invokeLater(() -> {
+      String message = "Result: " + result;
+      for (int i = 0; i < message.length(); i++) {
+        mda_io.write(i + 80*24, message.charAt(i));
+      }
+    });
 
 
     return result;

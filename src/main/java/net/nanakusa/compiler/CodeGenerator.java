@@ -8,7 +8,18 @@ public class CodeGenerator {
       throw new Error("not an lvar: " + node.getType());
     }
 
+    // optimize the case where the variable is at the top of the stack
+    if (node.getOffset() == 0) {
+      System.out.printf("push_bp\n");
+      return;
+    }
+
+    // consider the stack frame layout
+    System.out.printf("push_bp\n");
     System.out.printf("push %d\n", node.getOffset());
+    System.out.printf("add\n");
+
+    // System.out.printf("push %d\n", node.getOffset());
   }
 
   public static void codegen(Node node) {

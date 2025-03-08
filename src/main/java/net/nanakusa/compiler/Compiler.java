@@ -25,6 +25,7 @@ public class Compiler {
       }
     }
 
+    System.out.printf("jmp main\n");
     for (Node node : nodeTree) {
       CodeGenerator.codegen(node);
     }
