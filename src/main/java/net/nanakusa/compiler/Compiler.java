@@ -17,17 +17,12 @@ public class Compiler {
     token = new ArrayList<Token>();
     String code = getCode(args[0]);
     Tokenizer.tokenize(code, token);
-    Parser.token = token;
-    List<Node> nodeTree = Parser.parse();
+    List<Node> nodeTree = Parser.parse(token);
 
     if (args.length > 2 && args[1].equals("--ast")) {
       for (int i = 0; i < nodeTree.size(); i++) {
         ASTConverter.saveAsDotFile(nodeTree.get(i), "ast_dot/ast_stmt" + i + ".dot");
       }
-    }
-
-    for (LVar lvar : Parser.locals) {
-      System.out.printf("push 0\n");
     }
 
     for (Node node : nodeTree) {

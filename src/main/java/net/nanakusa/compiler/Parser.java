@@ -17,7 +17,8 @@ class Parser {
     return null;
   }
 
-  public static List<Node> parse() {
+  public static List<Node> parse(List<Token> token) {
+    Parser.token = token;
     return program();
   }
 
@@ -35,7 +36,7 @@ class Parser {
   private static Node function() {
     Node node = new Node(ND_TYPE.ND_FUNC);
     if (Tokenizer.consumeToken(token, "fn")) {
-      String fn_name = Tokenizer.expectIdent(token);
+      String fn_name = Tokenizer.consumeIdent(token);
       Tokenizer.expectToken(token, "(");      
       Tokenizer.expectToken(token, ")");
       Tokenizer.expectToken(token, "{");
@@ -57,6 +58,9 @@ class Parser {
 
   // expr ";" | return expr ";" | if "(" expr "){" stmt* "}"
   // | if "(" expr "){" stmt* "}" else "{" stmt* "}"
+  // | while "(" expr "){" stmt* "}"
+  // | for "(" expr ";" expr ";" expr "){" stmt* "}"
+  // | return expr ";"
   private static Node stmt() {
     Node node;
 
@@ -126,10 +130,11 @@ class Parser {
     if (Tokenizer.consumeToken(token, "return")) {
       node = new Node(ND_TYPE.ND_RETURN);
       node.setLhs(expr());
-    } else {
-      node = expr();
-    }
+      Tokenizer.expectToken(token, ";");
+      return node;
+    } 
 
+    node = expr();
     Tokenizer.expectToken(token, ";");
 
     return node;
@@ -288,7 +293,7 @@ class Parser {
     return primary();
   }
 
-  // \(expr\)? num
+  // \(expr\)? num | ident "(" ")"
   private static Node primary() {
     if (token.size() == 0) {
       throw new Error("Unexpected end of input");
@@ -314,16 +319,34 @@ class Parser {
     }
 
     if (token.get(0).getType() == TK_TYPE.TK_IDENT) {
-      Token tok = token.get(0);
+      Token ident_tok = token.get(0);
       token.remove(0);
-      Node node = new Node(ND_TYPE.ND_LVAR);
-      node.setName(tok.getStr());
 
-      LVar lvar = findLVar(tok.getStr());
+      // function call
+      if (Tokenizer.consumeToken(token, "(")) {
+        // check if the function is defined
+        for (Node func: code) {
+          if (func.getName().equals(ident_tok.getStr())) {
+            Node node = new Node(ND_TYPE.ND_CALL);
+            node.setName(ident_tok.getStr());
+
+            Tokenizer.expectToken(token, ")");
+
+            return node;
+          }
+        }
+
+        throw new Error("Function not found: " + ident_tok.getStr());
+      }
+
+      Node node = new Node(ND_TYPE.ND_LVAR);
+      node.setName(ident_tok.getStr());
+
+      LVar lvar = findLVar(ident_tok.getStr());
       if (lvar != null) {
         node.setOffset(lvar.getOffset());
       } else {
-        lvar = new LVar(tok.getStr(), locals.size());
+        lvar = new LVar(ident_tok.getStr(), locals.size());
         locals.add(lvar);
         node.setOffset(lvar.getOffset());
       }

@@ -120,7 +120,7 @@ class Tokenizer {
     return token.size() == 0 || token.get(0).getType() == TK_TYPE.TL_EOF;
   }
 
-  static String expectIdent(List<Token> token) {
+  public static String consumeIdent(List<Token> token) {
     if (token.size() == 0 || token.get(0).getType() != TK_TYPE.TK_IDENT) {
       throw new Error("Expected an identifier");
     }
@@ -128,5 +128,9 @@ class Tokenizer {
     Token tok = token.get(0);
     token.remove(0);
     return tok.getStr();
+  }
+
+  public static boolean isIdent(List<Token> token) {
+    return token.size() > 0 && token.get(0).getType() == TK_TYPE.TK_IDENT;
   }
 }

@@ -18,4 +18,5 @@ public enum ND_TYPE {
   ND_ELSE,
   ND_WHILE,
   ND_FUNC,
+  ND_CALL,
 }

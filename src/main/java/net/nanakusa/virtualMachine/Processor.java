@@ -32,6 +32,7 @@ class Processor {
     boolean endFlag = false;
     int cmd = 0, op = 0;
     int operand1 = 0, operand2 = 0;
+    int reg_bp = 0;
 
     loadCode(code);
 
@@ -42,6 +43,18 @@ class Processor {
       while (cmd != -1 && cmd != 0) {
         // System.out.println("PC: " + pc + " CMD: " + cmd);
         switch (cmd) {
+          case Operators.CALL:
+            op = code.read(pc);
+            pc += 1;
+            stack.push(pc);
+            stack.push(reg_bp);
+            pc = op;
+            System.out.println("CALL " + op); 
+            break;
+          case Operators.SET_BP:
+            reg_bp = stack.pop();
+            System.out.println("SET_BP " + reg_bp);
+            break;
           case Operators.POP:
             op = stack.pop();
             System.out.println("POP " + op);

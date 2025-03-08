@@ -12,6 +12,22 @@ public class CodeGenerator {
   }
 
   public static void codegen(Node node) {
+    if (node.getType() == ND_TYPE.ND_FUNC) {
+      System.out.printf("%s:\n", node.getName());
+      System.out.printf("push_sp\n");
+      System.out.printf("set_bp\n");
+
+      for (int i = 0; i < node.getLocals().size(); i++) {
+        System.out.printf("push 0\n");
+      }
+
+      for (Node stmt : node.getStmts()) {
+        codegen(stmt);
+      }
+
+      return;
+    }
+
     switch (node.getType()) {
       case ND_ASSIGN:
         genLVar(node.getLhs());
@@ -72,12 +88,18 @@ public class CodeGenerator {
         System.out.printf("L%dend:\n", fLabel);
 
         return;
+      case ND_CALL:
+        System.out.printf("call %s\n", node.getName());
+        return;
     }
 
     codegen(node.getLhs());
     codegen(node.getRhs());
 
     switch (node.getType()) {
+      case ND_CALL:
+        System.out.printf("call %s\n", node.getName());
+        return;
       case ND_MUL:
         System.out.printf("mul\n");
         return;

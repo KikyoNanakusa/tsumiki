@@ -120,6 +120,15 @@ public class Assembler {
         return new Byte[] { Operators.EQ };
       case "neq":
         return new Byte[] { Operators.NEQ };
+      case "call":
+        label = tokens.get(1);
+        if (labelMap.containsKey(label)) {
+          return new Byte[] { Operators.CALL, labelMap.get(label).byteValue() };
+        } else {
+          throw new IllegalArgumentException("Unknown label: " + label);
+        }
+       case "set_bp": // value on the top of the stack will be popped and set to the base pointer register
+        return new Byte[] { Operators.SET_BP };
       default:
         throw new IllegalArgumentException("Unknown operator: " + token);
     }
