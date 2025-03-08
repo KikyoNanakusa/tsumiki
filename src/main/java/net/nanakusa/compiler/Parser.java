@@ -38,6 +38,19 @@ class Parser {
     if (Tokenizer.consumeToken(token, "fn")) {
       String fn_name = Tokenizer.consumeIdent(token);
       Tokenizer.expectToken(token, "(");      
+
+      List<LVar> args = new ArrayList<>();
+      if (Tokenizer.isIdent(token)) {
+        LVar arg = new LVar(Tokenizer.consumeIdent(token), args.size());
+        args.add(arg);
+        while (Tokenizer.consumeToken(token, ",")) {
+          arg = new LVar(Tokenizer.consumeIdent(token), args.size());
+          args.add(arg);
+        }
+
+        node.setArgs(args);
+      }
+
       Tokenizer.expectToken(token, ")");
       Tokenizer.expectToken(token, "{");
       List<Node> stmts = new ArrayList<>();
@@ -329,6 +342,19 @@ class Parser {
           if (func.getName().equals(ident_tok.getStr())) {
             Node node = new Node(ND_TYPE.ND_CALL);
             node.setName(ident_tok.getStr());
+
+            // parse arguments
+            if (func.getArgs() != null) {
+              List<Node> argInput = new ArrayList<>();
+              argInput.add(expr());
+              
+              for (int i = 1; i < func.getArgs().size(); i++) {
+                Tokenizer.consumeToken(token, ",");
+                argInput.add(expr());
+              }
+
+              node.setArgExpr(argInput);
+            }
 
             Tokenizer.expectToken(token, ")");
 

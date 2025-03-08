@@ -20,6 +20,8 @@ public class Node {
 
   private List<Node> stmts; // function body: statements of the function
   private List<LVar> locals; // local variables of function
+  private List<LVar> args; // arguments of function
+  private List<Node> argExpr; 
 
   public void printTree(String indent) {
     System.out.println(indent + "Node Type: " + type);
@@ -94,6 +96,14 @@ public class Node {
     this.locals = locals;
   }
 
+  public void setArgs(List<LVar> args) {
+    this.args = args;
+  }
+
+  public void setArgExpr(List<Node> argExpr) {
+    this.argExpr = argExpr;
+  }
+
   public int getOffset() {
     return this.offset;
   }
@@ -144,5 +154,13 @@ public class Node {
 
   public List<LVar> getLocals() {
     return locals;
+  }
+
+  public List<LVar> getArgs() {
+    return args;
+  }
+
+  public List<Node> getArgExpr() {
+    return argExpr;
   }
 }
