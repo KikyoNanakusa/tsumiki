@@ -21,14 +21,38 @@ class Parser {
     return program();
   }
 
-  // stmt*
+  // function*
   private static List<Node> program() {
+
     while (!Tokenizer.atEof(token)) {
-      Node node = stmt();
-      code.add(node);
+      code.add(function());
     }
 
     return code;
+  }
+
+  // "fn" ident "(" ")" "{" stmt* "}"
+  private static Node function() {
+    Node node = new Node(ND_TYPE.ND_FUNC);
+    if (Tokenizer.consumeToken(token, "fn")) {
+      String fn_name = Tokenizer.expectIdent(token);
+      Tokenizer.expectToken(token, "(");      
+      Tokenizer.expectToken(token, ")");
+      Tokenizer.expectToken(token, "{");
+      List<Node> stmts = new ArrayList<>();
+      while (!Tokenizer.consumeToken(token, "}")) {
+        stmts.add(stmt());
+      }
+
+      node.setName(fn_name);
+      node.setStmts(stmts);
+      node.setLocals(locals);
+      locals = new ArrayList<>();
+
+      return node;
+    } else {
+      throw new Error("Expected function declaration");
+    }
   }
 
   // expr ";" | return expr ";" | if "(" expr "){" stmt* "}"

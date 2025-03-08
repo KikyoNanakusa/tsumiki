@@ -8,7 +8,7 @@ public class Node {
   private Node lhs;
   private Node rhs;
 
-  private String name;
+  private String name; // function name or variable name
   private int offset;
 
   private Node cond;
@@ -17,6 +17,9 @@ public class Node {
 
   private Node init;
   private Node inc;
+
+  private List<Node> stmts; // function body: statements of the function
+  private List<LVar> locals; // local variables of function
 
   public void printTree(String indent) {
     System.out.println(indent + "Node Type: " + type);
@@ -83,6 +86,14 @@ public class Node {
     this.inc = inc;
   }
 
+  public void setStmts(List<Node> stmts) {
+    this.stmts = stmts;
+  }
+
+  public void setLocals(List<LVar> locals) {
+    this.locals = locals;
+  }
+
   public int getOffset() {
     return this.offset;
   }
@@ -125,5 +136,13 @@ public class Node {
 
   public Node getInc() {
     return inc;
+  }
+
+  public List<Node> getStmts() {
+    return stmts;
+  }
+
+  public List<LVar> getLocals() {
+    return locals;
   }
 }

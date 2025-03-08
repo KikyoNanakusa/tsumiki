@@ -17,4 +17,5 @@ public enum ND_TYPE {
   ND_IF,
   ND_ELSE,
   ND_WHILE,
+  ND_FUNC,
 }

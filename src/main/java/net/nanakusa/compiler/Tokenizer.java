@@ -4,7 +4,7 @@ import java.util.List;
 
 class Tokenizer {
   private static String isReservedString(String str) {
-    String[] reservedTokens = { "for", "while", "if", "else", "<=", ">=", "==", "!=", "return" };
+    String[] reservedTokens = { "for", "while", "if", "else", "<=", ">=", "==", "!=", "return", "fn", "->" };
 
     for (String token : reservedTokens) {
       if (str.length() >= token.length() && str.substring(0, token.length()).equals(token)) {
@@ -15,7 +15,7 @@ class Tokenizer {
   }
 
   private static boolean isReservedChar(char ch) {
-    char[] reservedTokens = { '+', '-', '*', '/', '(', ')', '<', '>', ';', '=', '{', '}', '[', ']' };
+    char[] reservedTokens = { '+', '-', '*', '/', '(', ')', '<', '>', ';', '=', '{', '}', '[', ']', ',' };
 
     for (char token : reservedTokens) {
       if (ch == token) {
@@ -118,5 +118,15 @@ class Tokenizer {
 
   public static boolean atEof(List<Token> token) {
     return token.size() == 0 || token.get(0).getType() == TK_TYPE.TL_EOF;
+  }
+
+  static String expectIdent(List<Token> token) {
+    if (token.size() == 0 || token.get(0).getType() != TK_TYPE.TK_IDENT) {
+      throw new Error("Expected an identifier");
+    }
+
+    Token tok = token.get(0);
+    token.remove(0);
+    return tok.getStr();
   }
 }
