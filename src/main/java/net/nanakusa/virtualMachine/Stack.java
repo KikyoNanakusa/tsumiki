@@ -21,4 +21,9 @@ public class Stack extends SubMemory {
   public int getStackPointer() {
     return stackPointer;
   }
+
+  public int setStackPointer(int value) {
+    stackPointer = value;
+    return stackPointer;
+  }
 }

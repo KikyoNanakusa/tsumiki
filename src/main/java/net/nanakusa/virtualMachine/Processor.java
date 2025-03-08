@@ -36,6 +36,7 @@ class Processor {
 
     loadCode(code);
 
+    clock:
     while (endFlag == false) {
       pc = 0;
       cmd = code.read(pc);
@@ -73,6 +74,11 @@ class Processor {
             op = stack.getStackPointer();
             stack.push(op);
             System.out.println("PUSH_SP " + op);
+            break;
+          case Operators.SET_SP:
+            op = stack.pop();
+            stack.setStackPointer(op);
+            System.out.println("SET_SP " + op);
             break;
           case Operators.ADD:
             operand2 = stack.pop();
@@ -166,6 +172,21 @@ class Processor {
             stack.push(op);
             System.out.println("NEQ (" + operand1 + ", " + operand2 + ")");
             break;
+          case Operators.RET:
+            // If the base pointer is 0, then the program ends
+            if (reg_bp == 0) {
+              System.out.println("END");
+              endFlag = true;
+              break clock;
+            }
+
+            int ret_val = stack.pop();
+            stack.setStackPointer(reg_bp);
+            reg_bp = stack.pop();
+            pc = stack.pop();
+            stack.push(ret_val);
+            System.out.println("RET");
+            break;
           default:
             System.out.println("Invalid command");
             break;
@@ -176,9 +197,6 @@ class Processor {
       endFlag = true;
     }
 
-    
-
-
     // Return the top of the stack
     final int result;
     if (stack.getStackPointer() != 0) {
@@ -188,13 +206,13 @@ class Processor {
     }
 
     // DEBUG: Show the result on the display via memory mapped I/O
-    mda_io.initDisplay();
-    SwingUtilities.invokeLater(() -> {
-      String message = "Result: " + result;
-      for (int i = 0; i < message.length(); i++) {
-        mda_io.write(i + 80*24, message.charAt(i));
-      }
-    });
+    // mda_io.initDisplay();
+    // SwingUtilities.invokeLater(() -> {
+    //   String message = "Result: " + result;
+    //   for (int i = 0; i < message.length(); i++) {
+    //     mda_io.write(i + 80*24, message.charAt(i));
+    //   }
+    // });
 
 
     return result;

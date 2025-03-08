@@ -22,4 +22,6 @@ public class Operators {
   public static final byte CALL = 0x12;
   public static final byte SET_BP = 0x13;
   public static final byte PUSH_BP = 0x14;
+  public static final byte RET = 0x15;
+  public static final byte SET_SP = 0x16;
 }

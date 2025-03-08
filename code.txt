@@ -1,8 +1,1 @@
-fn test() {
-  a = 1;
-  return a;
-}
-
-fn main() {
-  test();
-}
+fn test() {a = 1; b = 3; return a+b; } fn main() { b = 1; c = b + 1; return test() + test(); }

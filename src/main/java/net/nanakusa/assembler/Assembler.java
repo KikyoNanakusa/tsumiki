@@ -131,6 +131,10 @@ public class Assembler {
         return new Byte[] { Operators.SET_BP };
        case "push_bp": // value of the base pointer register will be pushed to the stack
         return new Byte[] { Operators.PUSH_BP };
+       case "set_sp": // value on the top of the stack will be popped and set to the stack pointer register
+        return new Byte[] { Operators.SET_SP };
+       case "ret":
+        return new Byte[] { Operators.RET };
       default:
         throw new IllegalArgumentException("Unknown operator: " + token);
     }
